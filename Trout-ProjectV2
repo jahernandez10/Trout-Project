@@ -7,8 +7,7 @@ from matplotlib.lines import lineStyles
 
 import sim_functions as sf
 
-# Uncomment when you want a fixed seed
-# np.random.seed(0)
+np.random.seed(0)
 
 # Define global variables for each species
 water, trout, heron, fishermen = 0, 1, 2, 3
@@ -46,9 +45,9 @@ def create_agent_domain(Xsize: int, Ysize: int, deep_water_prob: list, shallow_w
 
 def main():
 
-    sizeX, sizeY = 50, 50 # Define the size of the grid (30x30 cells)
-    shallow_water_prob = [.85,.1,.05] # Define the probabilities for water, trout, and fishermen to appear in shallow water
-    deep_water_prob = [.85,.15,.00] # Define the probabilities for water, trout, and herons to appear in deep water
+    sizeX, sizeY = 40, 40 # Define the size of the grid (30x30 cells)
+    shallow_water_prob = [.85,.15,.0] # Define the probabilities for water, trout, and fishermen to appear in shallow water
+    deep_water_prob = [.85,.15,.0] # Define the probabilities for water, trout, and herons to appear in deep water
 
     # Set the number of iterations and markers for 4 capturing PNGs of the domain at equal intervals
     max_iterations = 52
@@ -70,6 +69,7 @@ def main():
         # Update states of the trout and fishermen
         domain = sf.update_trout(domain, hatching=0.05, weeks_to_hatch= 3, season_markers= season_markers, week= i)
         domain = sf.update_fishermen(domain, max_catches= 4)
+        domain = sf.update_herons(domain, hatching= 0.02)
 
         currTime += 1
 
@@ -94,6 +94,7 @@ def main():
     fig2 = plt.subplot()
     fig2.plot(simTime,trout_pop, label= "Trout")
     fig2.plot(simTime, fishermen_pop, label = "Fishermen")
+    fig2.plot(simTime,heron_pop, label="Heron")
     fig2.legend()
 
     fig2.set_xlabel("Time")
